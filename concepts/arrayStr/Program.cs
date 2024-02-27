@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Program
 {
@@ -39,9 +40,21 @@ public class Program
             Console.WriteLine(str);
         }
 
+        // Call the FindBob method and print the result
+        Console.WriteLine("Is 'Bob' found in the list? " + FindBob(dynamicArrayStr) + "\n");
+    }
 
-        // ARRAY INSERT
-        Console.WriteLine("\nCREATING A DYNAMIC ARRAY OF INSERT");
+    // Define FindBob as a separate method outside Main
+    static bool FindBob(List<string> dynamicArrayStr)
+    {
+        foreach (var name in dynamicArrayStr)
+        {
+            if (name == "Bob")
+            {
+                return true;
+            }
+        }
 
+        return false;
     }
 }
