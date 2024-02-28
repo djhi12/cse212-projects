@@ -1,16 +1,19 @@
 ﻿using System;
 
-public class Program
+namespace forLoop
 {
-    static void Main(string[] args)
+    public class Program
     {
-        // Simple for loop to print numbers from 1 to 5
-
-
-        for (int i = 1; i <= 5; i++)
+        static void Main(string[] args)
         {
-            Console.WriteLine(i);
-        }
+            // Simple for loop to print numbers from 1 to 5
 
+
+            for (int i = 1; i <= 5; i++)
+            {
+                Console.WriteLine(i);
+            }
+
+        }
     }
 }
