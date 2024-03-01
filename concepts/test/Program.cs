@@ -11,13 +11,23 @@ public class Program
 
     public void Run()
     {
-        var executionTime = Time(() => LotsOfLoops(100), 10);
-        Console.WriteLine($"Execution Time: {executionTime} ms");
+        var stopwatch = Stopwatch.StartNew();
+        var work = LotsOfLoops(1000);
+
+        stopwatch.Stop();
+
+        // This will display 1000000
+        Console.WriteLine("Innermost count is: {0}", work);
+
+        // The time displayed will vary based on your computer
+        Console.WriteLine("Execution Time in milliseconds: {0}", stopwatch.Elapsed.TotalMilliseconds);
     }
 
-    private void LotsOfLoops(int n)
+    private int LotsOfLoops(int n)
     {
         int total = 0;
+        int count = 0; // Variable for instrumentation 
+
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
@@ -25,20 +35,13 @@ public class Program
                 for (int k = 0; k < n; k++)
                 {
                     total += (i * j * k);
+                    count++;  // Count the number of times in the inner-most loop
                 }
             }
         }
-    }
 
-    private double Time(Action executeAlgorithm, int times)
-    {
-        var sw = Stopwatch.StartNew();
-        for (var i = 0; i < times; i++)
-        {
-            executeAlgorithm(); // Calls the action passed in to this method
-        }
+        Console.WriteLine(total);
 
-        sw.Stop();
-        return sw.Elapsed.TotalMilliseconds / times;
+        return count;
     }
 }
