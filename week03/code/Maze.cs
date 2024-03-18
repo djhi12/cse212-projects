@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 /// <summary>
 /// Defines a maze using a dictionary. The dictionary is provided by the
 /// user when the Maze object is created. The dictionary will contain the
@@ -14,49 +16,81 @@
 /// If there is a wall, then display "Can't go that way!".  If there is no wall,
 /// then the 'currX' and 'currY' values should be changed.
 /// </summary>
-public class Maze {
-    private readonly Dictionary<ValueTuple<int, int>, bool[]> _mazeMap;
-    private int _currX = 1;
-    private int _currY = 1;
+public class Maze
+{
+    private Dictionary<(int, int), bool[]> map;
+    private (int, int) currentPosition;
 
-    public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap) {
-        _mazeMap = mazeMap;
+    public Maze(Dictionary<(int, int), bool[]> map)
+    {
+        this.map = map;
+        this.currentPosition = (1, 1); // Starting position
     }
 
-    // Todo Maze Problem - ADD YOUR CODE HERE
-    /// <summary>
-    /// Check to see if you can move left.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
-    public void MoveLeft() {
-        // FILL IN CODE
+    public void MoveLeft()
+    {
+        int newX = currentPosition.Item1;
+        int newY = currentPosition.Item2 - 1;
+        if (IsValidMove(newX, newY, 0))
+        {
+            currentPosition = (newX, newY);
+        }
+        else
+        {
+            Console.WriteLine("Error: Cannot move left.");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move right.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
-    public void MoveRight() {
-        // FILL IN CODE
+    public void MoveRight()
+    {
+        int newX = currentPosition.Item1;
+        int newY = currentPosition.Item2 + 1;
+        if (IsValidMove(newX, newY, 1))
+        {
+            currentPosition = (newX, newY);
+        }
+        else
+        {
+            Console.WriteLine("Error: Cannot move right.");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move up.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
-    public void MoveUp() {
-        // FILL IN CODE
+    public void MoveUp()
+    {
+        int newX = currentPosition.Item1 - 1;
+        int newY = currentPosition.Item2;
+        if (IsValidMove(newX, newY, 2))
+        {
+            currentPosition = (newX, newY);
+        }
+        else
+        {
+            Console.WriteLine("Error: Cannot move up.");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move down.  If you can, then move.  If you
-    /// can't move, then display "Can't go that way!"
-    /// </summary>
-    public void MoveDown() {
-        // FILL IN CODE
+    public void MoveDown()
+    {
+        int newX = currentPosition.Item1 + 1;
+        int newY = currentPosition.Item2;
+        if (IsValidMove(newX, newY, 3))
+        {
+            currentPosition = (newX, newY);
+        }
+        else
+        {
+            Console.WriteLine("Error: Cannot move down.");
+        }
     }
 
-    public void ShowStatus() {
-        Console.WriteLine($"Current location (x={_currX}, y={_currY})");
+    public void ShowStatus()
+    {
+        Console.WriteLine($"Current position: {currentPosition}");
+    }
+
+    private bool IsValidMove(int x, int y, int direction)
+    {
+        if (!map.ContainsKey((x, y))) return false;
+        return map[(x, y)][direction];
     }
 }
