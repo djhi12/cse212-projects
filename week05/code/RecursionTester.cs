@@ -1,8 +1,10 @@
-public static class RecursionTester {
+public static class RecursionTester
+{
     /// <summary>
     /// Entry point for the Prove 8 tests
     /// </summary>
-    public static void Run() {
+    public static void Run()
+    {
         // Sample Test Cases (may not be comprehensive) 
         Console.WriteLine("\n=========== PROBLEM 1 TESTS ===========");
         Console.WriteLine(SumSquaresRecursive(10)); // 385
@@ -145,10 +147,16 @@ public static class RecursionTester {
     /// to identify a base case (terminating case).  If the value of
     /// n &lt;= 0, just return 0.   A loop should not be used.
     /// </summary>
-    public static int SumSquaresRecursive(int n) {
-        // TODO Start Problem 1
-        return 0;
+    public static int SumSquaresRecursive(int n)
+    {
+        // Base case: If n is less than or equal to 0, return 0
+        if (n <= 0)
+            return 0;
+        // Recursive case: Return the square of n plus the sum of squares from 1 to n-1
+        else
+            return n * n + SumSquaresRecursive(n - 1);
     }
+
 
     /// <summary>
     /// #############
@@ -169,9 +177,27 @@ public static class RecursionTester {
     /// You can assume that the size specified is always valid (between 1 
     /// and the length of the letters list).
     /// </summary>
-    public static void PermutationsChoose(string letters, int size, string word = "") {
-        // TODO Start Problem 2
+    public static void PermutationsChoose(string letters, int size, string word = "")
+    {
+        // Base case: If size is 0, print the current word
+        if (size == 0)
+        {
+            Console.WriteLine(word);
+            return;
+        }
+
+        // Recursive case: For each character in letters, recursively call the function
+        // with size decremented by 1 and the current character appended to the current word
+        for (int i = 0; i < letters.Length; i++)
+        {
+            // Append the current character to the current word
+            string newWord = word + letters[i];
+
+            // Recursively call the function with size decremented by 1 and the updated word
+            PermutationsChoose(letters, size - 1, newWord);
+        }
     }
+
 
     /// <summary>
     /// #############
@@ -218,21 +244,31 @@ public static class RecursionTester {
     /// The last test case is commented out because it will not work
     /// until the memoization is implemented.
     /// </summary>
-    public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null) {
+    public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
+    {
+        // Initialize the memoization dictionary if it's null
+        if (remember == null)
+            remember = new Dictionary<int, decimal>();
+
+        // Check if the result for s is already calculated and stored in remember
+        if (remember.ContainsKey(s))
+            return remember[s];
+
         // Base Cases
         if (s == 0)
-            return 0;
-        if (s == 1)
             return 1;
-        if (s == 2)
-            return 2;
-        if (s == 3)
-            return 4;
+        if (s < 0)
+            return 0;
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+
+        // Store the result in remember dictionary for future use
+        remember[s] = ways;
+
         return ways;
     }
+
 
     /// <summary>
     /// #############
@@ -247,15 +283,37 @@ public static class RecursionTester {
     /// Using recursion, display all possible binary strings for a given pattern.  You might find 
     /// some of the string functions like IndexOf and [..X] / [X..] to be useful in solving this problem.
     /// </summary>
-    public static void WildcardBinary(string pattern) {
-        // TODO Start Problem 4
+    public static void WildcardBinary(string pattern)
+    {
+        WildcardBinaryHelper(pattern, 0);
     }
+
+    private static void WildcardBinaryHelper(string pattern, int index)
+    {
+        // Base case: If there are no wildcard symbols left in the pattern, print the pattern
+        if (index >= pattern.Length || !pattern.Contains("*"))
+        {
+            Console.WriteLine(pattern);
+            return;
+        }
+
+        // Find the index of the next wildcard symbol (*) after the current index
+        int wildcardIndex = pattern.IndexOf("*", index);
+
+        // Replace the wildcard symbol (*) with '0' and recursively call the function
+        WildcardBinaryHelper(pattern.Substring(0, wildcardIndex) + "0" + pattern.Substring(wildcardIndex + 1), wildcardIndex + 1);
+
+        // Replace the wildcard symbol (*) with '1' and recursively call the function
+        WildcardBinaryHelper(pattern.Substring(0, wildcardIndex) + "1" + pattern.Substring(wildcardIndex + 1), wildcardIndex + 1);
+    }
+
 
     /// <summary>
     /// Use recursion to Print all paths that start at (0,0) and end at the
     /// 'end' square.
     /// </summary>
-    public static void SolveMaze(Maze maze, int x = 0, int y = 0, List<ValueTuple<int, int>>? currPath = null) {
+    public static void SolveMaze(Maze maze, int x = 0, int y = 0, List<ValueTuple<int, int>>? currPath = null)
+    {
         // If this is the first time running the function, then we need
         // to initialize the currPath list.
         if (currPath == null)
